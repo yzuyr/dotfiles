@@ -15,6 +15,18 @@
   boot.loader.grub.device = "/dev/vda";
   boot.loader.grub.useOSProber = true;
 
+  virtualisation = {
+    containers.enable = true;
+    podman = {
+      enable = true;
+      dockerCompat = true;
+      defaultNetwork.settings.dns_enabled = true;
+      dockerSocket = {
+        enable = true;
+      };
+    };
+  };
+
   networking.hostName = "nixos"; # Define your hostname.
 
   networking.networkmanager.enable = true;
@@ -50,7 +62,7 @@
   users.users.ryuz = {
     isNormalUser = true;
     description = "Ryuz";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "podman" ];
     packages = with pkgs; [];
     shell = pkgs.fish;
   };
@@ -61,6 +73,9 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+  podman
+  podman-compose
+  podman-tui
   unzip
   	stow
   	fastfetch

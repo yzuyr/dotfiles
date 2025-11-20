@@ -17,6 +17,7 @@
 
   virtualisation = {
     containers.enable = true;
+    oci-containers.backend = "podman";
     podman = {
       enable = true;
       dockerCompat = true;
@@ -30,6 +31,8 @@
   networking.hostName = "nixos"; # Define your hostname.
 
   networking.networkmanager.enable = true;
+
+  programs.nix-ld.enable = true;
 
   # Set your time zone.
   time.timeZone = "Europe/Warsaw";
@@ -90,6 +93,12 @@
   	wget
     nushell
   ];
+
+  environment.extraInit = ''
+    if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
+      export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
+    fi
+  '';
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;

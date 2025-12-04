@@ -92,6 +92,11 @@
 	open-vm-tools
   	wget
     nushell
+    zellij
+    yazi
+    openssl
+    opencode
+    lsof
   ];
 
   environment.extraInit = ''
@@ -102,6 +107,9 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+
+  # Enable Netbird private VPN daemon.
+  services.netbird.enable = true;
 
   networking.firewall.enable = false;
 
